@@ -4,23 +4,26 @@ import { useState, useEffect, useCallback } from "react";
 import { Menu, X, Phone, Instagram, Youtube } from "lucide-react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
-
-const links = [
-  { name: "Главная", href: "#home" },
-  { name: "Услуги", href: "#services" },
-  { name: "Врачи", href: "#doctors" },
-  { name: "Галерея", href: "#gallery" },
-  { name: "Отзывы", href: "#testimonials" },
-  { name: "Контакты", href: "#booking" },
-];
+import { useTranslation } from "@/i18n";
+import type { Language } from "@/i18n";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("#home");
+  const { t, lang, setLang } = useTranslation();
+
+  const links = [
+    { name: t("nav.home"), href: "#home" },
+    { name: t("nav.services"), href: "#services" },
+    { name: t("nav.doctors"), href: "#doctors" },
+    { name: t("nav.gallery"), href: "#gallery" },
+    { name: t("nav.testimonials"), href: "#testimonials" },
+    { name: t("nav.contacts"), href: "#booking" },
+  ];
 
   const updateActive = useCallback(() => {
-    const sections = links.map(l => l.href.slice(1));
+    const sections = ["home", "services", "doctors", "gallery", "testimonials", "booking"];
     let current = "#home";
     for (const id of sections) {
       const el = document.getElementById(id);
@@ -52,6 +55,8 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
+  const langs: Language[] = ["ru", "uz"];
+
   return (
     <>
       <header
@@ -79,7 +84,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center gap-6">
             {links.map((link) => (
               <a
-                key={link.name}
+                key={link.href}
                 href={link.href}
                 className={cn(
                   "text-sm font-medium transition-colors",
@@ -102,11 +107,30 @@ export default function Navbar() {
               <Phone size={16} />
               +998 55 519 9119
             </a>
+
+            {/* Language Switcher */}
+            <div className="flex rounded-full border border-white/10 overflow-hidden">
+              {langs.map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={cn(
+                    "px-3 py-1.5 text-xs font-bold uppercase transition-colors",
+                    lang === l
+                      ? "bg-brand-accent text-brand-900"
+                      : "text-brand-silver hover:text-white"
+                  )}
+                >
+                  {l === "ru" ? "RU" : "UZ"}
+                </button>
+              ))}
+            </div>
+
             <a
               href="#booking"
               className="btn-shimmer px-5 py-2.5 rounded-full bg-brand-accent text-brand-900 font-semibold text-sm hover:bg-white hover:scale-[1.05] active:scale-[0.95] transition-all duration-300"
             >
-              Записаться
+              {t("nav.booking")}
             </a>
           </div>
 
@@ -129,7 +153,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Full-Screen Menu — rendered outside header to avoid clipping */}
+      {/* Mobile Full-Screen Menu */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-brand-900/90 backdrop-blur-2xl z-[60] lg:hidden flex flex-col"
@@ -158,7 +182,7 @@ export default function Navbar() {
           <nav className="flex flex-col items-center justify-center flex-1 gap-6">
             {links.map((link) => (
               <a
-                key={link.name}
+                key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 className={cn(
@@ -186,8 +210,26 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
               className="mt-2 px-8 py-4 rounded-full bg-brand-accent text-brand-900 font-bold text-lg hover:bg-white transition-colors"
             >
-              Записаться на прием
+              {t("nav.bookingFull")}
             </a>
+
+            {/* Language Switcher — Mobile */}
+            <div className="flex rounded-full border border-white/10 overflow-hidden">
+              {langs.map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={cn(
+                    "px-5 py-2 text-sm font-bold uppercase transition-colors",
+                    lang === l
+                      ? "bg-brand-accent text-brand-900"
+                      : "text-brand-silver hover:text-white"
+                  )}
+                >
+                  {l === "ru" ? "RU" : "UZ"}
+                </button>
+              ))}
+            </div>
           </nav>
 
           {/* Social links at bottom */}

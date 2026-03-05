@@ -15,13 +15,7 @@ import {
   Phone,
   MessageSquare,
 } from "lucide-react";
-
-const serviceOptions = [
-  { id: "implantation", label: "Имплантация", desc: "Восстановление зубного ряда", icon: <Shield size={32} /> },
-  { id: "veneers", label: "Виниры", desc: "Идеальная улыбка за визит", icon: <Sparkles size={32} /> },
-  { id: "caries", label: "Лечение кариеса", desc: "Безболезненно и быстро", icon: <Smile size={32} /> },
-  { id: "whitening", label: "Отбеливание", desc: "Сияющая белизна зубов", icon: <Sun size={32} /> },
-];
+import { useTranslation } from "@/i18n";
 
 const timeSlots = [
   "09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
@@ -33,7 +27,7 @@ const particleColors = ["#38BDF8", "#FFD700", "#C0C0C0", "#38BDF8", "#FFD700"];
 
 export default function Booking() {
   const [step, setStep] = useState(1);
-  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+  const [direction, setDirection] = useState(1);
   const [formData, setFormData] = useState({
     service: "",
     date: "",
@@ -42,6 +36,14 @@ export default function Booking() {
     phone: "",
     message: "",
   });
+  const { t } = useTranslation();
+
+  const serviceOptions = [
+    { id: "implantation", label: t("booking.service.implant"), desc: t("booking.service.implant.desc"), icon: <Shield size={32} /> },
+    { id: "veneers", label: t("booking.service.veneers"), desc: t("booking.service.veneers.desc"), icon: <Sparkles size={32} /> },
+    { id: "caries", label: t("booking.service.caries"), desc: t("booking.service.caries.desc"), icon: <Smile size={32} /> },
+    { id: "whitening", label: t("booking.service.whitening"), desc: t("booking.service.whitening.desc"), icon: <Sun size={32} /> },
+  ];
 
   const goTo = (target: number) => {
     setDirection(target > step ? 1 : -1);
@@ -72,8 +74,8 @@ export default function Booking() {
   );
 
   const formatDate = (d: Date) => {
-    const days = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
-    const months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+    const days = [t("booking.days.sun"), t("booking.days.mon"), t("booking.days.tue"), t("booking.days.wed"), t("booking.days.thu"), t("booking.days.fri"), t("booking.days.sat")];
+    const months = [t("booking.months.jan"), t("booking.months.feb"), t("booking.months.mar"), t("booking.months.apr"), t("booking.months.may"), t("booking.months.jun"), t("booking.months.jul"), t("booking.months.aug"), t("booking.months.sep"), t("booking.months.oct"), t("booking.months.nov"), t("booking.months.dec")];
     return { day: days[d.getDay()], date: d.getDate(), month: months[d.getMonth()], full: d.toISOString().split("T")[0] };
   };
 
@@ -113,11 +115,10 @@ export default function Booking() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10"
         >
-          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">Запись</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Записаться на приём</h2>
+          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">{t("booking.label")}</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t("booking.title")}</h2>
         </motion.div>
 
-        {/* Card with scroll entrance */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -131,16 +132,16 @@ export default function Booking() {
               {[1, 2, 3].map((s, i) => {
                 const Icon = stepIcons[i];
                 const completed = s < step;
-                const active = s === step;
+                const isActive = s === step;
                 return (
                   <div key={s} className="flex items-center">
                     <motion.div
-                      animate={active ? { scale: [1, 1.1, 1] } : { scale: 1 }}
-                      transition={active ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" } : {}}
+                      animate={isActive ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                      transition={isActive ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" } : {}}
                       className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                         completed
                           ? "bg-brand-accent text-brand-900"
-                          : active
+                          : isActive
                             ? "bg-brand-accent text-brand-900 shadow-[0_0_20px_rgba(56,189,248,0.4)]"
                             : "bg-brand-800 text-brand-silver"
                       }`}
@@ -176,7 +177,7 @@ export default function Booking() {
                   exit="exit"
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-xl font-bold text-white mb-6">Выберите услугу</h3>
+                  <h3 className="text-xl font-bold text-white mb-6">{t("booking.step1.title")}</h3>
                   <div className="grid grid-cols-2 gap-3">
                     {serviceOptions.map((opt, i) => (
                       <motion.button
@@ -215,7 +216,7 @@ export default function Booking() {
                   exit="exit"
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-xl font-bold text-white mb-6">Выберите дату и время</h3>
+                  <h3 className="text-xl font-bold text-white mb-6">{t("booking.step2.title")}</h3>
 
                   <div className="flex gap-2 overflow-x-auto pb-3 mb-6 snap-x scrollbar-hide">
                     {dates.map((d, i) => {
@@ -242,17 +243,17 @@ export default function Booking() {
                     })}
                   </div>
 
-                  <p className="text-sm text-brand-silver mb-3">Время</p>
+                  <p className="text-sm text-brand-silver mb-3">{t("booking.step2.time")}</p>
                   <div className="grid grid-cols-5 gap-2">
-                    {timeSlots.map((t, i) => {
-                      const selected = formData.time === t;
+                    {timeSlots.map((ts, i) => {
+                      const selected = formData.time === ts;
                       return (
                         <motion.button
-                          key={t}
+                          key={ts}
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.2, delay: i * 0.03 }}
-                          onClick={() => setFormData({ ...formData, time: t })}
+                          onClick={() => setFormData({ ...formData, time: ts })}
                           className={`relative py-2.5 rounded-xl text-sm font-medium border transition-all ${
                             selected
                               ? "border-brand-accent bg-brand-accent/15 text-white glow"
@@ -266,7 +267,7 @@ export default function Booking() {
                               transition={{ type: "spring", stiffness: 300, damping: 25 }}
                             />
                           )}
-                          {t}
+                          {ts}
                         </motion.button>
                       );
                     })}
@@ -285,10 +286,10 @@ export default function Booking() {
                   exit="exit"
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-xl font-bold text-white mb-6">Контактные данные</h3>
+                  <h3 className="text-xl font-bold text-white mb-6">{t("booking.step3.title")}</h3>
                   <div className="flex flex-col gap-4">
                     {([
-                      { icon: <User size={18} />, type: "text" as const, placeholder: "Ваше имя", field: "name" as const },
+                      { icon: <User size={18} />, type: "text" as const, placeholder: t("booking.step3.namePlaceholder"), field: "name" as const },
                       { icon: <Phone size={18} />, type: "tel" as const, placeholder: "+998 55 519 9119", field: "phone" as const },
                     ] as const).map((input, i) => (
                       <motion.div
@@ -316,7 +317,7 @@ export default function Booking() {
                     >
                       <span className="absolute left-4 top-4 text-brand-silver/50"><MessageSquare size={18} /></span>
                       <textarea
-                        placeholder="Комментарий (необязательно)"
+                        placeholder={t("booking.step3.commentPlaceholder")}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         rows={3}
@@ -335,7 +336,6 @@ export default function Booking() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-10"
                 >
-                  {/* Particle burst */}
                   <div className="relative inline-block">
                     {Array.from({ length: 14 }).map((_, i) => {
                       const angle = (360 / 14) * i;
@@ -366,12 +366,11 @@ export default function Booking() {
                     </motion.div>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-white mb-2">Заявка отправлена!</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">{t("booking.confirm.title")}</h3>
                   <p className="text-brand-silver mb-6">
-                    Спасибо, {formData.name}! Мы перезвоним вам для подтверждения записи.
+                    {t("booking.confirm.subtitle").replace("{name}", formData.name)}
                   </p>
 
-                  {/* Booking summary card */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -379,15 +378,15 @@ export default function Booking() {
                     className="glass rounded-xl p-4 max-w-xs mx-auto mb-6 text-sm"
                   >
                     <div className="flex justify-between text-brand-silver mb-1">
-                      <span>Услуга</span>
+                      <span>{t("booking.confirm.service")}</span>
                       <span className="text-white font-medium">{selectedServiceLabel}</span>
                     </div>
                     <div className="flex justify-between text-brand-silver mb-1">
-                      <span>Дата</span>
+                      <span>{t("booking.confirm.date")}</span>
                       <span className="text-white font-medium">{formData.date}</span>
                     </div>
                     <div className="flex justify-between text-brand-silver">
-                      <span>Время</span>
+                      <span>{t("booking.confirm.time")}</span>
                       <span className="text-white font-medium">{formData.time}</span>
                     </div>
                   </motion.div>
@@ -400,7 +399,7 @@ export default function Booking() {
                     }}
                     className="btn-border-glow text-brand-accent font-semibold hover:text-white transition-colors px-5 py-2 rounded-xl"
                   >
-                    Записать ещё
+                    {t("booking.confirm.another")}
                   </button>
                 </motion.div>
               )}
@@ -418,7 +417,7 @@ export default function Booking() {
                     <motion.span variants={{ hover: { x: -3 } }} transition={{ type: "spring", stiffness: 300 }}>
                       <ArrowLeft size={18} />
                     </motion.span>
-                    Назад
+                    {t("booking.nav.back")}
                   </motion.button>
                 ) : (
                   <div />
@@ -434,7 +433,7 @@ export default function Booking() {
                       : "bg-brand-800 text-brand-silver/50 cursor-not-allowed"
                   }`}
                 >
-                  {step === 3 ? "Отправить" : "Далее"}
+                  {step === 3 ? t("booking.nav.submit") : t("booking.nav.next")}
                   <motion.span
                     className="inline-block transition-transform group-hover:translate-x-1"
                   >
@@ -447,7 +446,7 @@ export default function Booking() {
 
           {step < 4 && (
             <p className="text-xs text-brand-silver/50 text-center mt-4">
-              Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+              {t("booking.consent")}
             </p>
           )}
         </motion.div>

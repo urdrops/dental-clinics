@@ -4,13 +4,7 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import Image from "next/image";
 import { Youtube, Instagram, Play, ChevronLeft, ChevronRight } from "lucide-react";
-
-const youtubeVideos = [
-  { id: "XJRWQADDzNY", title: "Процесс имплантации", type: "short" as const },
-  { id: "iGvmMBsTC2A", title: "Результаты лечения", type: "short" as const },
-  { id: "xAnNqR4Ly2I", title: "До и после", type: "short" as const },
-  { id: "FCexd9mlI6Y", title: "Обзор клиники Restom", type: "video" as const },
-];
+import { useTranslation } from "@/i18n";
 
 const instagramReels = [
   { shortcode: "DU28pggiAi0", title: "Reel 1", thumbnail: "/instagram/reel-1.png" },
@@ -55,6 +49,15 @@ export default function Media() {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(0);
   const [unlocked, setUnlocked] = useState(false);
+  const { t } = useTranslation();
+
+  const youtubeVideos = [
+    { id: "XJRWQADDzNY", title: t("media.video1"), type: "short" as const },
+    { id: "iGvmMBsTC2A", title: t("media.video2"), type: "short" as const },
+    { id: "xAnNqR4Ly2I", title: t("media.video3"), type: "short" as const },
+    { id: "FCexd9mlI6Y", title: t("media.video4"), type: "video" as const },
+  ];
+
   const len = youtubeVideos.length;
 
   const go = useCallback((dir: number) => {
@@ -84,18 +87,17 @@ export default function Media() {
         >
           <div className="flex items-center justify-center gap-2 mb-3">
             <Youtube size={20} className="text-red-500" />
-            <p className="text-brand-accent font-medium text-sm uppercase tracking-widest">Видео</p>
+            <p className="text-brand-accent font-medium text-sm uppercase tracking-widest">{t("media.videoLabel")}</p>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Смотрите на YouTube</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t("media.videoTitle")}</h2>
           <p className="text-brand-silver max-w-2xl mx-auto">
-            Полезные видео о стоматологии, обзоры процедур и истории пациентов.
+            {t("media.videoSubtitle")}
           </p>
         </motion.div>
 
         {/* Video Carousel */}
         <div className="relative flex items-center justify-center mb-20">
           <div className="relative w-full flex items-center justify-center">
-            {/* Arrow left */}
             <button
               onClick={() => go(-1)}
               className="hidden md:flex absolute left-0 lg:left-[5%] top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
@@ -103,7 +105,6 @@ export default function Media() {
               <ChevronLeft size={20} />
             </button>
 
-            {/* Card */}
             <div className="overflow-hidden w-full flex justify-center">
               <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
@@ -150,7 +151,6 @@ export default function Media() {
               </AnimatePresence>
             </div>
 
-            {/* Arrow right */}
             <button
               onClick={() => go(1)}
               className="hidden md:flex absolute right-0 lg:right-[5%] top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
@@ -185,7 +185,7 @@ export default function Media() {
             <Instagram size={20} className="text-pink-500" />
             <p className="text-brand-accent font-medium text-sm uppercase tracking-widest">Instagram</p>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Мы в Instagram</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t("media.instaTitle")}</h2>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-4xl mx-auto">

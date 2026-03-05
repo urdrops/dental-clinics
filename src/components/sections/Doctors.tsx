@@ -4,53 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { Instagram, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 import Image from "next/image";
-
-const doctors = [
-  {
-    name: "Фарход Усманов",
-    title: "Хирург-имплантолог",
-    role: "Основатель клиники",
-    services: ["Имплантация зубов", "Костная пластика", "Синус-лифтинг", "Удаление зубов мудрости", "Эстетическая хирургия"],
-    schedule: "Пн, Вт, Ср, Чт, Пт — 09:00–18:00",
-    instagram: "https://www.instagram.com/dr.farkhod_usmanov",
-    photo: "/doctors/dr1.png",
-  },
-  {
-    name: "Диёр Нематов",
-    title: "Стоматолог-ортопед",
-    services: ["Консультация", "Восстановление дефектов зубов", "Керамика, цирконий и виниры", "Эстетическая реставрация зубов", "Протезирование на имплантах"],
-    schedule: "Пн, Ср, Пт — 10:00–17:00",
-    photo: "/doctors/doctor-2.jpg",
-  },
-  {
-    name: "Анна Петрова",
-    title: "Ортодонт",
-    services: ["Брекет-системы", "Элайнеры", "Исправление прикуса", "Ретейнеры", "Детская ортодонтия"],
-    schedule: "Вт, Чт, Сб — 09:00–17:00",
-    photo: "/doctors/doctor-3.jpg",
-  },
-  {
-    name: "Михаил Козлов",
-    title: "Терапевт-стоматолог",
-    services: ["Лечение кариеса", "Лечение под микроскопом", "Эндодонтия", "Эстетическая реставрация", "Профессиональная чистка"],
-    schedule: "Пн, Ср, Пт — 09:00–18:00",
-    photo: "/doctors/doctor-4.jpg",
-  },
-  {
-    name: "Елена Сидорова",
-    title: "Стоматолог-ортопед",
-    services: ["Виниры и коронки", "Цифровое протезирование", "Мостовидные протезы", "Съёмные протезы"],
-    schedule: "Пн, Вт, Чт — 10:00–18:00",
-    photo: "/doctors/doctor-5.jpg",
-  },
-  {
-    name: "Мария Иванова",
-    title: "Детский стоматолог",
-    services: ["Лечение молочных зубов", "Герметизация фиссур", "Фторирование", "Серебрение", "Профилактические осмотры"],
-    schedule: "Пн–Сб — 09:00–16:00",
-    photo: "/doctors/doctor-6.jpg",
-  },
-];
+import { useTranslation } from "@/i18n";
 
 function getIndex(i: number, len: number) {
   return ((i % len) + len) % len;
@@ -60,6 +14,55 @@ export default function Doctors() {
   const [active, setActive] = useState(0);
   const [direction, setDirection] = useState(0);
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { t } = useTranslation();
+
+  const doctors = [
+    {
+      name: t("doctors.dr1.name"),
+      title: t("doctors.dr1.title"),
+      role: t("doctors.dr1.role"),
+      services: t("doctors.dr1.services").split(", "),
+      schedule: t("doctors.dr1.schedule"),
+      instagram: "https://www.instagram.com/dr.farkhod_usmanov",
+      photo: "/doctors/dr1.png",
+    },
+    {
+      name: t("doctors.dr2.name"),
+      title: t("doctors.dr2.title"),
+      services: t("doctors.dr2.services").split(", "),
+      schedule: t("doctors.dr2.schedule"),
+      photo: "/doctors/doctor-2.jpg",
+    },
+    {
+      name: t("doctors.dr3.name"),
+      title: t("doctors.dr3.title"),
+      services: t("doctors.dr3.services").split(", "),
+      schedule: t("doctors.dr3.schedule"),
+      photo: "/doctors/doctor-3.jpg",
+    },
+    {
+      name: t("doctors.dr4.name"),
+      title: t("doctors.dr4.title"),
+      services: t("doctors.dr4.services").split(", "),
+      schedule: t("doctors.dr4.schedule"),
+      photo: "/doctors/doctor-4.jpg",
+    },
+    {
+      name: t("doctors.dr5.name"),
+      title: t("doctors.dr5.title"),
+      services: t("doctors.dr5.services").split(", "),
+      schedule: t("doctors.dr5.schedule"),
+      photo: "/doctors/doctor-5.jpg",
+    },
+    {
+      name: t("doctors.dr6.name"),
+      title: t("doctors.dr6.title"),
+      services: t("doctors.dr6.services").split(", "),
+      schedule: t("doctors.dr6.schedule"),
+      photo: "/doctors/doctor-6.jpg",
+    },
+  ];
+
   const len = doctors.length;
 
   const go = useCallback((dir: number) => {
@@ -100,10 +103,10 @@ export default function Doctors() {
     <section id="doctors" className="py-20 md:py-28 bg-brand-900 overflow-hidden">
       <div className="container mx-auto px-4 md:px-12">
         <div className="text-center mb-14">
-          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">Наша команда</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Врачи клиники</h2>
+          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">{t("doctors.label")}</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t("doctors.title")}</h2>
           <p className="text-brand-silver max-w-2xl mx-auto text-lg">
-            Опытные специалисты с международной квалификацией
+            {t("doctors.subtitle")}
           </p>
         </div>
 
@@ -111,7 +114,7 @@ export default function Doctors() {
         <div className="relative rounded-3xl overflow-hidden mb-14">
           <Image
             src="/doctors/1.webp"
-            alt="Команда Restom Dental Clinic"
+            alt={t("doctors.teamAlt")}
             width={1200}
             height={600}
             className="w-full h-auto object-cover rounded-3xl"
@@ -121,7 +124,6 @@ export default function Doctors() {
 
         {/* Carousel */}
         <div className="relative flex items-center justify-center h-[520px] sm:h-[560px] md:h-[600px]">
-          {/* Side cards — blurred background previews */}
           {[prev, next].map((idx, j) => (
             <div
               key={`side-${idx}-${j}`}
@@ -140,7 +142,6 @@ export default function Doctors() {
             </div>
           ))}
 
-          {/* Center card — active doctor */}
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div
               key={active}
@@ -156,20 +157,15 @@ export default function Doctors() {
               onDragEnd={handleDragEnd}
               className="relative w-[280px] sm:w-[300px] md:w-[340px] aspect-[2/3] rounded-3xl overflow-hidden z-10 cursor-grab active:cursor-grabbing shadow-2xl shadow-black/40"
             >
-              {/* Doctor photo */}
               <Image
                 src={doctors[active].photo}
                 alt={doctors[active].name}
                 fill
                 className="object-cover pointer-events-none"
               />
-
-
-
             </motion.div>
           </AnimatePresence>
 
-          {/* Arrow buttons — desktop */}
           <button
             onClick={() => { go(-1); startAuto(); }}
             className="hidden md:flex absolute left-2 lg:left-[10%] top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all z-20"
@@ -184,7 +180,7 @@ export default function Doctors() {
           </button>
         </div>
 
-        {/* Floating info panel — overlaps bottom of carousel */}
+        {/* Floating info panel */}
         <div className="relative z-20 -mt-20 sm:-mt-24 max-w-sm sm:max-w-md mx-auto px-4">
           <AnimatePresence mode="wait">
             <motion.div
@@ -195,7 +191,6 @@ export default function Doctors() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="glass rounded-2xl p-5 sm:p-6 shadow-xl shadow-black/30"
             >
-              {/* Header row: name + role + insta */}
               <div className="flex items-start justify-between gap-3 mb-1">
                 <div className="min-w-0">
                   <h3 className="text-2xl font-bold text-white leading-tight">{doctors[active].name}</h3>
@@ -220,10 +215,8 @@ export default function Doctors() {
                 </div>
               </div>
 
-              {/* Divider */}
               <div className="h-px bg-white/10 my-3" />
 
-              {/* Services as inline tags */}
               <div className="flex flex-wrap gap-1.5 mb-3">
                 {doctors[active].services.map((s, i) => (
                   <span key={i} className="text-xs text-white/80 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1">
@@ -232,7 +225,6 @@ export default function Doctors() {
                 ))}
               </div>
 
-              {/* Schedule */}
               <div className="flex items-center gap-2 text-white/50 text-xs">
                 <Clock size={13} className="text-brand-accent shrink-0" />
                 <span>{doctors[active].schedule}</span>

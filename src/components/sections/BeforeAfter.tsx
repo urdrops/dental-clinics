@@ -2,34 +2,16 @@
 
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/i18n";
 
 interface SliderCase {
   title: string;
   description: string;
   beforeColor: string;
   afterColor: string;
+  beforeLabel: string;
+  afterLabel: string;
 }
-
-const cases: SliderCase[] = [
-  {
-    title: "Виниры — полная реставрация",
-    description: "Установка 10 виниров для идеальной линии улыбки",
-    beforeColor: "from-amber-900/60 to-yellow-800/40",
-    afterColor: "from-brand-accent/40 to-cyan-400/30",
-  },
-  {
-    title: "Отбеливание ZOOM",
-    description: "Осветление на 6 тонов за одну процедуру",
-    beforeColor: "from-orange-900/50 to-amber-800/40",
-    afterColor: "from-sky-400/40 to-blue-300/30",
-  },
-  {
-    title: "Имплантация и протезирование",
-    description: "Восстановление жевательной группы зубов",
-    beforeColor: "from-red-900/40 to-rose-800/30",
-    afterColor: "from-emerald-400/30 to-teal-400/20",
-  },
-];
 
 function Slider({ cas }: { cas: SliderCase }) {
   const [position, setPosition] = useState(50);
@@ -63,24 +45,21 @@ function Slider({ cas }: { cas: SliderCase }) {
       onTouchMove={handleTouchMove}
       onTouchStart={(e) => updatePosition(e.touches[0].clientX)}
     >
-      {/* "After" side (full background) */}
       <div className={`absolute inset-0 bg-gradient-to-br ${cas.afterColor} bg-brand-800`}>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/20 text-6xl font-bold">ПОСЛЕ</span>
+          <span className="text-white/20 text-6xl font-bold">{cas.afterLabel}</span>
         </div>
       </div>
 
-      {/* "Before" side (clipped) */}
       <div
         className={`absolute inset-0 bg-gradient-to-br ${cas.beforeColor} bg-brand-900`}
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       >
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/20 text-6xl font-bold">ДО</span>
+          <span className="text-white/20 text-6xl font-bold">{cas.beforeLabel}</span>
         </div>
       </div>
 
-      {/* Slider line */}
       <div
         className="absolute top-0 bottom-0 w-0.5 bg-white z-10"
         style={{ left: `${position}%` }}
@@ -97,6 +76,35 @@ function Slider({ cas }: { cas: SliderCase }) {
 }
 
 export default function BeforeAfter() {
+  const { t } = useTranslation();
+
+  const cases: SliderCase[] = [
+    {
+      title: t("beforeAfter.case1.title"),
+      description: t("beforeAfter.case1.desc"),
+      beforeColor: "from-amber-900/60 to-yellow-800/40",
+      afterColor: "from-brand-accent/40 to-cyan-400/30",
+      beforeLabel: t("beforeAfter.before"),
+      afterLabel: t("beforeAfter.after"),
+    },
+    {
+      title: t("beforeAfter.case2.title"),
+      description: t("beforeAfter.case2.desc"),
+      beforeColor: "from-orange-900/50 to-amber-800/40",
+      afterColor: "from-sky-400/40 to-blue-300/30",
+      beforeLabel: t("beforeAfter.before"),
+      afterLabel: t("beforeAfter.after"),
+    },
+    {
+      title: t("beforeAfter.case3.title"),
+      description: t("beforeAfter.case3.desc"),
+      beforeColor: "from-red-900/40 to-rose-800/30",
+      afterColor: "from-emerald-400/30 to-teal-400/20",
+      beforeLabel: t("beforeAfter.before"),
+      afterLabel: t("beforeAfter.after"),
+    },
+  ];
+
   return (
     <section id="gallery" className="py-20 md:py-28 bg-brand-800">
       <div className="container mx-auto px-4 md:px-12">
@@ -107,10 +115,10 @@ export default function BeforeAfter() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">Результаты</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">До и После</h2>
+          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">{t("beforeAfter.label")}</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t("beforeAfter.title")}</h2>
           <p className="text-brand-silver max-w-2xl mx-auto text-lg">
-            Проведите пальцем или курсором, чтобы увидеть результаты работы наших специалистов.
+            {t("beforeAfter.subtitle")}
           </p>
         </motion.div>
 

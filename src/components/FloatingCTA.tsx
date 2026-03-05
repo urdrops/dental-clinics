@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, X, Send } from "lucide-react";
+import { useTranslation } from "@/i18n";
 
 export default function FloatingCTA() {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setVisible(window.scrollY > 400);
@@ -30,7 +32,7 @@ export default function FloatingCTA() {
               className="flex-1 flex items-center justify-center gap-2 bg-brand-accent text-brand-900 font-bold py-3 rounded-xl"
             >
               <Phone size={18} />
-              Позвонить
+              {t("floating.call")}
             </a>
             <a
               href="https://t.me/restom_clinic"
@@ -53,7 +55,7 @@ export default function FloatingCTA() {
                   exit={{ opacity: 0, y: 10, scale: 0.9 }}
                   className="absolute bottom-16 right-0 glass-strong rounded-2xl p-4 w-56 mb-2"
                 >
-                  <p className="text-white text-sm font-semibold mb-3">Свяжитесь с нами</p>
+                  <p className="text-white text-sm font-semibold mb-3">{t("floating.contactUs")}</p>
                   <div className="flex flex-col gap-2">
                     <a
                       href="tel:+998555199119"

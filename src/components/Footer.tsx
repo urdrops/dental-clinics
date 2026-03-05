@@ -2,44 +2,46 @@
 
 import { Phone, MapPin, Instagram, Youtube, Clock, Send } from "lucide-react";
 import Image from "next/image";
-
-const navLinks = [
-  { name: "Главная", href: "#home" },
-  { name: "Услуги", href: "#services" },
-  { name: "Врачи", href: "#doctors" },
-  { name: "Галерея", href: "#gallery" },
-  { name: "Отзывы", href: "#testimonials" },
-  { name: "Запись", href: "#booking" },
-];
-
-const socials = [
-  {
-    label: "Клиника",
-    href: "https://www.instagram.com/restom.dental.clinic",
-    icon: <Instagram size={18} />,
-  },
-  {
-    label: "Доктор",
-    href: "https://www.instagram.com/dr.farkhod_usmanov",
-    icon: <Instagram size={18} />,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@dr.farkhod_usmanov",
-    icon: <Youtube size={18} />,
-  },
-  {
-    label: "Telegram",
-    href: "https://t.me/restom_clinic",
-    icon: <Send size={18} />,
-  },
-];
+import { useTranslation } from "@/i18n";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { t } = useTranslation();
+
+  const navLinks = [
+    { name: t("nav.home"), href: "#home" },
+    { name: t("nav.services"), href: "#services" },
+    { name: t("nav.doctors"), href: "#doctors" },
+    { name: t("nav.gallery"), href: "#gallery" },
+    { name: t("nav.testimonials"), href: "#testimonials" },
+    { name: t("footer.nav.booking"), href: "#booking" },
+  ];
+
+  const socials = [
+    {
+      label: t("footer.socials.clinic"),
+      href: "https://www.instagram.com/restom.dental.clinic",
+      icon: <Instagram size={18} />,
+    },
+    {
+      label: t("footer.socials.doctor"),
+      href: "https://www.instagram.com/dr.farkhod_usmanov",
+      icon: <Instagram size={18} />,
+    },
+    {
+      label: "YouTube",
+      href: "https://www.youtube.com/@dr.farkhod_usmanov",
+      icon: <Youtube size={18} />,
+    },
+    {
+      label: "Telegram",
+      href: "https://t.me/restom_clinic",
+      icon: <Send size={18} />,
+    },
+  ];
 
   return (
-    <footer className="bg-[#050B14] border-t border-white/5">
+    <footer className="bg-gray-50 border-t border-gray-200">
       {/* Main grid */}
       <div className="container mx-auto px-4 md:px-12 pt-14 pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -54,8 +56,8 @@ export default function Footer() {
                 className="h-11 w-auto"
               />
             </a>
-            <p className="text-brand-silver/80 text-sm leading-relaxed mb-5 max-w-xs">
-              Премиальная стоматология для тех, кто ценит комфорт, эстетику и безупречное качество.
+            <p className="text-gray-500 text-sm leading-relaxed mb-5 max-w-xs">
+              {t("footer.description")}
             </p>
             {/* Social icons */}
             <div className="flex gap-2.5">
@@ -66,7 +68,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className="w-9 h-9 rounded-full bg-white/[0.06] flex items-center justify-center text-brand-silver hover:text-brand-accent hover:bg-brand-accent/10 transition-colors"
+                  className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 hover:text-brand-accent hover:bg-brand-accent/10 transition-colors"
                 >
                   {s.icon}
                 </a>
@@ -76,15 +78,15 @@ export default function Footer() {
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">
-              Навигация
+            <h4 className="text-brand-900 font-bold text-sm uppercase tracking-wider mb-5">
+              {t("footer.nav")}
             </h4>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-1">
               {navLinks.map((link) => (
-                <li key={link.name}>
+                <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-brand-silver/80 hover:text-brand-accent transition-colors text-sm"
+                    className="text-gray-500 hover:text-brand-accent transition-colors text-sm"
                   >
                     {link.name}
                   </a>
@@ -95,14 +97,14 @@ export default function Footer() {
 
           {/* Contacts */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">
-              Контакты
+            <h4 className="text-brand-900 font-bold text-sm uppercase tracking-wider mb-5">
+              {t("footer.contacts")}
             </h4>
             <ul className="space-y-3.5">
               <li>
                 <a
                   href="tel:+998555199119"
-                  className="flex items-center gap-3 text-brand-silver/80 hover:text-brand-accent transition-colors text-sm"
+                  className="flex items-center gap-3 text-gray-500 hover:text-brand-accent transition-colors text-sm"
                 >
                   <Phone size={16} className="shrink-0 text-brand-accent" />
                   +998 55 519 9119
@@ -113,7 +115,7 @@ export default function Footer() {
                   href="https://t.me/restom_clinic"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-brand-silver/80 hover:text-brand-accent transition-colors text-sm"
+                  className="flex items-center gap-3 text-gray-500 hover:text-brand-accent transition-colors text-sm"
                 >
                   <Send size={16} className="shrink-0 text-brand-accent" />
                   @restom_clinic
@@ -124,10 +126,10 @@ export default function Footer() {
                   href="https://yandex.uz/maps/?pt=69.255743,41.282284&z=17&l=map"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-brand-silver/80 hover:text-brand-accent transition-colors text-sm"
+                  className="flex items-start gap-3 text-gray-500 hover:text-brand-accent transition-colors text-sm"
                 >
                   <MapPin size={16} className="shrink-0 text-brand-accent mt-0.5" />
-                  <span>г. Ташкент, ул. Бобура, 61</span>
+                  <span>{t("footer.address")}</span>
                 </a>
               </li>
             </ul>
@@ -135,22 +137,22 @@ export default function Footer() {
 
           {/* Working Hours */}
           <div>
-            <h4 className="text-white font-bold text-sm uppercase tracking-wider mb-5">
-              Режим работы
+            <h4 className="text-brand-900 font-bold text-sm uppercase tracking-wider mb-5">
+              {t("footer.hours")}
             </h4>
             <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-brand-silver/80 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 text-sm">
                 <Clock size={16} className="shrink-0 text-brand-accent" />
                 <div className="flex justify-between w-full">
-                  <span>Пн — Пт</span>
-                  <span className="text-white/80 font-medium">09:00 — 21:00</span>
+                  <span>{t("footer.hours.weekdays")}</span>
+                  <span className="text-brand-900 font-medium">{t("footer.hours.weekdaysTime")}</span>
                 </div>
               </li>
-              <li className="flex items-center gap-3 text-brand-silver/80 text-sm">
+              <li className="flex items-center gap-3 text-gray-500 text-sm">
                 <Clock size={16} className="shrink-0 text-brand-accent" />
                 <div className="flex justify-between w-full">
-                  <span>Сб — Вс</span>
-                  <span className="text-white/80 font-medium">10:00 — 18:00</span>
+                  <span>{t("footer.hours.weekend")}</span>
+                  <span className="text-brand-900 font-medium">{t("footer.hours.weekendTime")}</span>
                 </div>
               </li>
             </ul>
@@ -160,30 +162,30 @@ export default function Footer() {
               href="#booking"
               className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-accent/10 text-brand-accent font-semibold text-sm hover:bg-brand-accent/20 transition-colors"
             >
-              Записаться на приём
+              {t("footer.bookCTA")}
             </a>
           </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/[0.06]">
+      <div className="border-t border-gray-200">
         <div className="container mx-auto px-4 md:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-brand-silver/40 text-xs text-center sm:text-left">
-            &copy; {year} Restom Dental Clinic. Все права защищены.
+          <p className="text-gray-400 text-xs text-center sm:text-left">
+            &copy; {year} Restom Dental Clinic. {t("footer.copyright")}
           </p>
           <div className="flex gap-4">
             <a
               href="/privacy"
-              className="text-brand-silver/40 hover:text-brand-accent transition-colors text-xs"
+              className="text-gray-400 hover:text-brand-accent transition-colors text-xs"
             >
-              Политика конфиденциальности
+              {t("footer.privacy")}
             </a>
             <a
               href="/offer"
-              className="text-brand-silver/40 hover:text-brand-accent transition-colors text-xs"
+              className="text-gray-400 hover:text-brand-accent transition-colors text-xs"
             >
-              Договор оферты
+              {t("footer.offer")}
             </a>
           </div>
         </div>

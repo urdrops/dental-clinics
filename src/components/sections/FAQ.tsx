@@ -3,41 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-
-const faqs = [
-  {
-    q: "Больно ли ставить импланты?",
-    a: "Нет, процедура проводится под местной анестезией и абсолютно безболезненна. Вы не почувствуете дискомфорта во время установки. После процедуры возможны лёгкие ощущения, которые снимаются обычными обезболивающими.",
-  },
-  {
-    q: "Сколько стоит первичная консультация?",
-    a: "Первичная консультация в нашей клинике бесплатная. Врач проведёт осмотр, сделает диагностику и составит индивидуальный план лечения с точной стоимостью.",
-  },
-  {
-    q: "Какие гарантии вы даёте?",
-    a: "Мы даём официальную гарантию на все виды работ: на импланты — пожизненную, на виниры — до 15 лет, на пломбы — до 5 лет. Используем только сертифицированные материалы от ведущих производителей.",
-  },
-  {
-    q: "Сколько времени занимает установка виниров?",
-    a: "Весь процесс занимает 2-3 визита в течение 2 недель. На первом визите проводится подготовка и снятие слепков, на втором — примерка, на третьем — финальная установка.",
-  },
-  {
-    q: "Можно ли лечить зубы во время беременности?",
-    a: "Да, но с ограничениями. Оптимальный период — второй триместр. Мы используем безопасные анестетики и избегаем рентгена. Обязательно сообщите врачу о беременности на приёме.",
-  },
-  {
-    q: "Как записаться на приём?",
-    a: "Вы можете записаться через форму на сайте, позвонить по телефону +998 55 519 9119, или написать в Telegram. Мы перезвоним в течение 10 минут для подтверждения записи.",
-  },
-  {
-    q: "Есть ли рассрочка на лечение?",
-    a: "Да, мы предлагаем беспроцентную рассрочку на все виды лечения сроком до 12 месяцев. Подробности уточняйте у администратора клиники.",
-  },
-  {
-    q: "Как долго служат импланты?",
-    a: "При правильном уходе импланты служат всю жизнь. Мы используем импланты премиум-класса от мировых производителей с доказанной клинической историей более 20 лет.",
-  },
-];
+import { useTranslation } from "@/i18n";
 
 function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boolean; toggle: () => void }) {
   return (
@@ -75,6 +41,18 @@ function FAQItem({ q, a, isOpen, toggle }: { q: string; a: string; isOpen: boole
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { t } = useTranslation();
+
+  const faqs = [
+    { q: t("faq.q1"), a: t("faq.a1") },
+    { q: t("faq.q2"), a: t("faq.a2") },
+    { q: t("faq.q3"), a: t("faq.a3") },
+    { q: t("faq.q4"), a: t("faq.a4") },
+    { q: t("faq.q5"), a: t("faq.a5") },
+    { q: t("faq.q6"), a: t("faq.a6") },
+    { q: t("faq.q7"), a: t("faq.a7") },
+    { q: t("faq.q8"), a: t("faq.a8") },
+  ];
 
   return (
     <section className="py-20 md:py-28 bg-brand-900">
@@ -86,10 +64,10 @@ export default function FAQ() {
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">FAQ</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">Частые вопросы</h2>
+          <p className="text-brand-accent font-medium text-sm uppercase tracking-widest mb-3">{t("faq.label")}</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">{t("faq.title")}</h2>
           <p className="text-brand-silver max-w-2xl mx-auto text-lg">
-            Ответы на самые популярные вопросы наших пациентов.
+            {t("faq.subtitle")}
           </p>
         </motion.div>
 

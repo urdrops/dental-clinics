@@ -1,13 +1,7 @@
 "use client";
 
 import { useCountUp } from "@/utils/useCountUp";
-
-const stats = [
-  { value: 15, suffix: "+", label: "Лет опыта", accent: true },
-  { value: 2000, suffix: "+", label: "Пациентов" },
-  { value: 5000, suffix: "+", label: "Процедур" },
-  { value: 98, suffix: "%", label: "Довольны" },
-];
+import { useTranslation } from "@/i18n";
 
 function StatItem({ value, suffix, label, accent }: { value: number; suffix: string; label: string; accent?: boolean }) {
   const { count, ref } = useCountUp(value);
@@ -24,6 +18,15 @@ function StatItem({ value, suffix, label, accent }: { value: number; suffix: str
 }
 
 export default function Stats() {
+  const { t } = useTranslation();
+
+  const stats = [
+    { value: 15, suffix: "+", label: t("stats.years"), accent: true },
+    { value: 2000, suffix: "+", label: t("stats.patients") },
+    { value: 5000, suffix: "+", label: t("stats.procedures") },
+    { value: 98, suffix: "%", label: t("stats.satisfaction") },
+  ];
+
   return (
     <section className="py-14 md:py-20 bg-brand-900 relative overflow-hidden">
       <div className="absolute inset-0">
