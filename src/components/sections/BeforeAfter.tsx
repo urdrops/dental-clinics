@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/i18n";
 
 interface SliderCase {
   title: string;
   description: string;
-  beforeColor: string;
-  afterColor: string;
+  before: string;
+  after: string;
   beforeLabel: string;
   afterLabel: string;
 }
@@ -37,7 +38,7 @@ function Slider({ cas }: { cas: SliderCase }) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden cursor-col-resize select-none"
+      className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-col-resize select-none bg-brand-800"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
@@ -45,21 +46,34 @@ function Slider({ cas }: { cas: SliderCase }) {
       onTouchMove={handleTouchMove}
       onTouchStart={(e) => updatePosition(e.touches[0].clientX)}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${cas.afterColor} bg-brand-800`}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/20 text-6xl font-bold">{cas.afterLabel}</span>
-        </div>
-      </div>
+      {/* After image (full, behind) */}
+      <Image
+        src={cas.after}
+        alt={cas.afterLabel}
+        fill
+        className="object-cover"
+      />
+      <span className="absolute top-3 right-3 text-xs font-bold uppercase tracking-wider bg-brand-accent/80 text-brand-900 px-2.5 py-1 rounded-full z-[5]">
+        {cas.afterLabel}
+      </span>
 
+      {/* Before image (clipped) */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${cas.beforeColor} bg-brand-900`}
+        className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/20 text-6xl font-bold">{cas.beforeLabel}</span>
-        </div>
+        <Image
+          src={cas.before}
+          alt={cas.beforeLabel}
+          fill
+          className="object-cover"
+        />
+        <span className="absolute top-3 left-3 text-xs font-bold uppercase tracking-wider bg-white/80 text-brand-900 px-2.5 py-1 rounded-full">
+          {cas.beforeLabel}
+        </span>
       </div>
 
+      {/* Slider handle */}
       <div
         className="absolute top-0 bottom-0 w-0.5 bg-white z-10"
         style={{ left: `${position}%` }}
@@ -82,24 +96,32 @@ export default function BeforeAfter() {
     {
       title: t("beforeAfter.case1.title"),
       description: t("beforeAfter.case1.desc"),
-      beforeColor: "from-amber-900/60 to-yellow-800/40",
-      afterColor: "from-brand-accent/40 to-cyan-400/30",
+      before: "/results/before1.png",
+      after: "/results/after1.png",
       beforeLabel: t("beforeAfter.before"),
       afterLabel: t("beforeAfter.after"),
     },
     {
       title: t("beforeAfter.case2.title"),
       description: t("beforeAfter.case2.desc"),
-      beforeColor: "from-orange-900/50 to-amber-800/40",
-      afterColor: "from-sky-400/40 to-blue-300/30",
+      before: "/results/before2.JPG",
+      after: "/results/after2.JPG",
       beforeLabel: t("beforeAfter.before"),
       afterLabel: t("beforeAfter.after"),
     },
     {
       title: t("beforeAfter.case3.title"),
       description: t("beforeAfter.case3.desc"),
-      beforeColor: "from-red-900/40 to-rose-800/30",
-      afterColor: "from-emerald-400/30 to-teal-400/20",
+      before: "/results/before3.JPG",
+      after: "/results/after3.JPG",
+      beforeLabel: t("beforeAfter.before"),
+      afterLabel: t("beforeAfter.after"),
+    },
+    {
+      title: t("beforeAfter.case4.title"),
+      description: t("beforeAfter.case4.desc"),
+      before: "/results/before4.JPG",
+      after: "/results/after4.JPG",
       beforeLabel: t("beforeAfter.before"),
       afterLabel: t("beforeAfter.after"),
     },
@@ -122,7 +144,7 @@ export default function BeforeAfter() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {cases.map((cas, i) => (
             <motion.div
               key={i}

@@ -21,8 +21,8 @@ export default function Stats() {
   const { t } = useTranslation();
 
   const stats = [
-    { value: 15, suffix: "+", label: t("stats.years"), accent: true },
-    { value: 2000, suffix: "+", label: t("stats.patients") },
+    { value: 10, suffix: "+", label: t("stats.years"), accent: true },
+    { value: 12000, suffix: "+", label: t("stats.patients") },
     { value: 5000, suffix: "+", label: t("stats.procedures") },
     { value: 98, suffix: "%", label: t("stats.satisfaction") },
   ];
