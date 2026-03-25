@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Clock, CheckCircle, ChevronDown, AlertCircle, X } from "lucide-react";
+import Link from "next/link";
 import { useTranslation } from "@/i18n";
 
 type TFunc = ReturnType<typeof useTranslation>["t"];
@@ -56,6 +57,54 @@ function WhiteningIcon() {
   );
 }
 
+function BracesIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="9" width="4" height="6" rx="1" />
+      <rect x="10" y="9" width="4" height="6" rx="1" />
+      <rect x="16" y="9" width="4" height="6" rx="1" />
+      <line x1="8" y1="12" x2="10" y2="12" />
+      <line x1="14" y1="12" x2="16" y2="12" />
+      <path d="M6 9V6a6 6 0 0 1 12 0v3" opacity="0.4" />
+      <path d="M6 15v3a6 6 0 0 0 12 0v-3" opacity="0.4" />
+    </svg>
+  );
+}
+
+function HygieneIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5 .8 2.5 1 4 1 6 0 2 1 4 3 4s3-2 3-4c0-2 .2-3.5 1-6 .5-1.5 1-3 1-5 0-3-2-5-5-5Z" />
+      <path d="M9.5 7a5 5 0 0 0 5 0" opacity="0.4" />
+      <path d="M10 3l-2-1" />
+      <path d="M14 3l2-1" />
+      <path d="M12 2v-1" />
+    </svg>
+  );
+}
+
+function CrownIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 10l3-6 3 4 3-4 3 4 3-4 3 6" />
+      <path d="M3 10v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8" />
+      <circle cx="12" cy="15" r="2" opacity="0.4" />
+    </svg>
+  );
+}
+
+function ChildIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="6" r="4" />
+      <path d="M12 10c-4 0-7 2-7 5v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1c0-3-3-5-7-5Z" />
+      <path d="M10 5h1" opacity="0.4" />
+      <path d="M13 5h1" opacity="0.4" />
+      <path d="M10.5 7.5a2 2 0 0 0 3 0" opacity="0.4" />
+    </svg>
+  );
+}
+
 interface Service {
   icon: React.ReactNode;
   title: string;
@@ -67,6 +116,7 @@ interface Service {
   benefits: string[];
   whoNeeds: string;
   faq: { q: string; a: string }[];
+  priceTab: string;
 }
 
 function ServiceModal({ service, onClose, t }: { service: Service; onClose: () => void; t: TFunc }) {
@@ -239,6 +289,12 @@ function ServiceCard({ service, index, onOpen, t }: { service: Service; index: n
           {t("services.more")}
           <ChevronDown size={16} />
         </button>
+        <Link
+          href={`/prices?tab=${service.priceTab}`}
+          className="inline-flex items-center gap-1 text-brand-accent/60 hover:text-brand-accent text-sm font-medium transition-colors ml-auto"
+        >
+          {t("services.fullPrices")} &rarr;
+        </Link>
       </div>
     </motion.div>
   );
@@ -263,6 +319,7 @@ export default function Services() {
         { q: t("services.implant.faq1q"), a: t("services.implant.faq1a") },
         { q: t("services.implant.faq2q"), a: t("services.implant.faq2a") },
       ],
+      priceTab: "surgery",
     },
     {
       icon: <VeneerIcon />,
@@ -278,6 +335,7 @@ export default function Services() {
         { q: t("services.veneer.faq1q"), a: t("services.veneer.faq1a") },
         { q: t("services.veneer.faq2q"), a: t("services.veneer.faq2a") },
       ],
+      priceTab: "prosthetics",
     },
     {
       icon: <ToothFixIcon />,
@@ -293,6 +351,7 @@ export default function Services() {
         { q: t("services.caries.faq1q"), a: t("services.caries.faq1a") },
         { q: t("services.caries.faq2q"), a: t("services.caries.faq2a") },
       ],
+      priceTab: "caries",
     },
     {
       icon: <WhiteningIcon />,
@@ -308,6 +367,71 @@ export default function Services() {
         { q: t("services.whitening.faq1q"), a: t("services.whitening.faq1a") },
         { q: t("services.whitening.faq2q"), a: t("services.whitening.faq2a") },
       ],
+      priceTab: "prevention",
+    },
+    {
+      icon: <BracesIcon />,
+      title: t("services.ortho.title"),
+      tagline: t("services.ortho.tagline"),
+      price: t("services.ortho.price"),
+      duration: t("services.ortho.duration"),
+      description: t("services.ortho.description"),
+      howItWorks: [t("services.ortho.step1"), t("services.ortho.step2"), t("services.ortho.step3"), t("services.ortho.step4")],
+      benefits: [t("services.ortho.benefit1"), t("services.ortho.benefit2"), t("services.ortho.benefit3"), t("services.ortho.benefit4"), t("services.ortho.benefit5")],
+      whoNeeds: t("services.ortho.whoNeeds"),
+      faq: [
+        { q: t("services.ortho.faq1q"), a: t("services.ortho.faq1a") },
+        { q: t("services.ortho.faq2q"), a: t("services.ortho.faq2a") },
+      ],
+      priceTab: "orthodontics",
+    },
+    {
+      icon: <HygieneIcon />,
+      title: t("services.hygiene.title"),
+      tagline: t("services.hygiene.tagline"),
+      price: t("services.hygiene.price"),
+      duration: t("services.hygiene.duration"),
+      description: t("services.hygiene.description"),
+      howItWorks: [t("services.hygiene.step1"), t("services.hygiene.step2"), t("services.hygiene.step3"), t("services.hygiene.step4")],
+      benefits: [t("services.hygiene.benefit1"), t("services.hygiene.benefit2"), t("services.hygiene.benefit3"), t("services.hygiene.benefit4"), t("services.hygiene.benefit5")],
+      whoNeeds: t("services.hygiene.whoNeeds"),
+      faq: [
+        { q: t("services.hygiene.faq1q"), a: t("services.hygiene.faq1a") },
+        { q: t("services.hygiene.faq2q"), a: t("services.hygiene.faq2a") },
+      ],
+      priceTab: "prevention",
+    },
+    {
+      icon: <CrownIcon />,
+      title: t("services.crowns.title"),
+      tagline: t("services.crowns.tagline"),
+      price: t("services.crowns.price"),
+      duration: t("services.crowns.duration"),
+      description: t("services.crowns.description"),
+      howItWorks: [t("services.crowns.step1"), t("services.crowns.step2"), t("services.crowns.step3"), t("services.crowns.step4")],
+      benefits: [t("services.crowns.benefit1"), t("services.crowns.benefit2"), t("services.crowns.benefit3"), t("services.crowns.benefit4"), t("services.crowns.benefit5")],
+      whoNeeds: t("services.crowns.whoNeeds"),
+      faq: [
+        { q: t("services.crowns.faq1q"), a: t("services.crowns.faq1a") },
+        { q: t("services.crowns.faq2q"), a: t("services.crowns.faq2a") },
+      ],
+      priceTab: "prosthetics",
+    },
+    {
+      icon: <ChildIcon />,
+      title: t("services.pediatric.title"),
+      tagline: t("services.pediatric.tagline"),
+      price: t("services.pediatric.price"),
+      duration: t("services.pediatric.duration"),
+      description: t("services.pediatric.description"),
+      howItWorks: [t("services.pediatric.step1"), t("services.pediatric.step2"), t("services.pediatric.step3"), t("services.pediatric.step4")],
+      benefits: [t("services.pediatric.benefit1"), t("services.pediatric.benefit2"), t("services.pediatric.benefit3"), t("services.pediatric.benefit4"), t("services.pediatric.benefit5")],
+      whoNeeds: t("services.pediatric.whoNeeds"),
+      faq: [
+        { q: t("services.pediatric.faq1q"), a: t("services.pediatric.faq1a") },
+        { q: t("services.pediatric.faq2q"), a: t("services.pediatric.faq2a") },
+      ],
+      priceTab: "pediatric",
     },
   ];
 

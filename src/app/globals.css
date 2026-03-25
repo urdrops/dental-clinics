@@ -36,6 +36,16 @@ html {
   background: #38BDF8;
 }
 
+@keyframes hero-pan {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-hero-pan {
+  animation: hero-pan 20s ease-in-out infinite;
+}
+
 @keyframes path-flow {
   0% { stroke-dashoffset: 800; }
   100% { stroke-dashoffset: -800; }

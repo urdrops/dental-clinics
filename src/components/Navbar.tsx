@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Menu, X, Phone, Instagram, Youtube } from "lucide-react";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
+import Link from "next/link";
 import { useTranslation } from "@/i18n";
 import type { Language } from "@/i18n";
 
@@ -19,6 +20,7 @@ export default function Navbar() {
     { name: t("nav.doctors"), href: "#doctors" },
     { name: t("nav.gallery"), href: "#gallery" },
     { name: t("nav.testimonials"), href: "#testimonials" },
+    { name: t("nav.prices"), href: "/prices" },
     { name: t("nav.contacts"), href: "#booking" },
   ];
 
@@ -82,20 +84,30 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-6">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-sm font-medium transition-colors",
-                  activeSection === link.href
-                    ? "text-brand-accent"
-                    : "text-brand-silver hover:text-brand-accent"
-                )}
-              >
-                {link.name}
-              </a>
-            ))}
+            {links.map((link) =>
+              link.href.startsWith("/") ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-medium text-brand-silver hover:text-brand-accent transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "text-sm font-medium transition-colors",
+                    activeSection === link.href
+                      ? "text-brand-accent"
+                      : "text-brand-silver hover:text-brand-accent"
+                  )}
+                >
+                  {link.name}
+                </a>
+              )
+            )}
           </nav>
 
           {/* Desktop Right */}
@@ -180,21 +192,32 @@ export default function Navbar() {
 
           {/* Mobile menu links */}
           <nav className="flex flex-col items-center justify-center flex-1 gap-6">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  "text-2xl font-semibold transition-colors",
-                  activeSection === link.href
-                    ? "text-brand-accent"
-                    : "text-white hover:text-brand-accent"
-                )}
-              >
-                {link.name}
-              </a>
-            ))}
+            {links.map((link) =>
+              link.href.startsWith("/") ? (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-2xl font-semibold text-white hover:text-brand-accent transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "text-2xl font-semibold transition-colors",
+                    activeSection === link.href
+                      ? "text-brand-accent"
+                      : "text-white hover:text-brand-accent"
+                  )}
+                >
+                  {link.name}
+                </a>
+              )
+            )}
 
             {/* Phone number in menu */}
             <a

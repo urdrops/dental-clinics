@@ -1,10 +1,35 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Users, Award, Clock, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import BackgroundPaths from "../BackgroundPaths";
 import { useTranslation } from "@/i18n";
+
+function ToothIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M12 2C9.5 2 7.5 3.5 7 5.5C6.5 7.5 5 8 4 9.5C3 11 3.5 13 4 15C4.5 17 5.5 22 7.5 22C9 22 9.5 18 10.5 16C11 15 11.5 14.5 12 14.5C12.5 14.5 13 15 13.5 16C14.5 18 15 22 16.5 22C18.5 22 19.5 17 20 15C20.5 13 21 11 20 9.5C19 8 17.5 7.5 17 5.5C16.5 3.5 14.5 2 12 2Z" />
+    </svg>
+  );
+}
+
+function ShieldToothIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM12 6C13.1 6 14 6.7 14.3 7.8C14.5 8.8 15.2 9 15.7 9.8C16.2 10.5 16 11.5 15.7 12.5C15.5 13.5 15 16 14 16C13.2 16 13 14 12.5 13C12.3 12.5 12.1 12.3 12 12.3C11.9 12.3 11.7 12.5 11.5 13C11 14 10.8 16 10 16C9 16 8.5 13.5 8.3 12.5C8 11.5 7.8 10.5 8.3 9.8C8.8 9 9.5 8.8 9.7 7.8C10 6.7 10.9 6 12 6Z" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+      <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2ZM12.5 13H7V11.5H11V7H12.5V13Z" />
+    </svg>
+  );
+}
 
 function HeroReveal({ children, delay = 0, className = "", blur = false }: { children: React.ReactNode; delay?: number; className?: string; blur?: boolean }) {
   return (
@@ -31,9 +56,9 @@ export default function Hero() {
   const { t } = useTranslation();
 
   const trustBadges = [
-    { icon: <Users size={20} />, text: t("hero.trust.patients") },
-    { icon: <Award size={20} />, text: t("hero.trust.experience") },
-    { icon: <Clock size={20} />, text: t("hero.trust.noQueues") },
+    { icon: <ToothIcon />, text: t("hero.trust.patients") },
+    { icon: <ShieldToothIcon />, text: t("hero.trust.experience") },
+    { icon: <ClockIcon />, text: t("hero.trust.noQueues") },
   ];
 
   const validate = () => {
@@ -59,13 +84,28 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-brand-900">
-      {/* Animated Background Paths */}
-      <div className="absolute inset-x-0 top-0 h-[60vh] lg:h-full z-0 overflow-hidden">
-        <BackgroundPaths />
+      {/* Team photo background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 w-[200%] lg:w-full h-full animate-hero-pan lg:animate-none">
+          <Image
+            src="/doctors/1.png"
+            alt="Restom Dental Clinic team"
+            fill
+            className="object-cover object-top"
+            priority
+            quality={85}
+          />
+        </div>
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-brand-900/70" />
+        {/* Bottom fade to page background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-900/30 via-brand-900/40 to-brand-900" />
       </div>
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-brand-900/40 via-transparent to-brand-900 z-[1]" />
+      {/* Animated Background Paths (on top of photo) */}
+      <div className="absolute inset-x-0 top-0 h-[60vh] lg:h-full z-[1] overflow-hidden opacity-60">
+        <BackgroundPaths />
+      </div>
 
       <div className="container relative z-10 mx-auto px-4 md:px-12 pt-20 pb-20 lg:pt-24 lg:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -76,7 +116,7 @@ export default function Hero() {
             </HeroReveal>
 
             <HeroReveal blur delay={0.2}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1] mb-6 drop-shadow-lg">
                 {t("hero.headline1")}{" "}
                 <span className="gradient-text">
                   {t("hero.headline2")}
@@ -121,7 +161,7 @@ export default function Hero() {
 
           {/* Right: Mini Lead Form */}
           <HeroReveal delay={0.4}>
-            <div className="glass-strong rounded-3xl p-6 sm:p-8 glow max-w-md mx-auto lg:ml-auto">
+            <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-3xl p-6 sm:p-8 glow max-w-md mx-auto lg:ml-auto">
               <h3 className="text-xl font-bold text-white mb-2">{t("hero.form.title")}</h3>
               <p className="text-brand-silver text-sm mb-6">
                 {t("hero.form.subtitle")}
