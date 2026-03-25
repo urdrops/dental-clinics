@@ -1,34 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { motion, PanInfo } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { motion, AnimatePresence, PanInfo } from "framer-motion";
+import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "@/i18n";
-
-function getCardStyle(index: number, active: number, total: number) {
-  let diff = index - active;
-  if (diff > total / 2) diff -= total;
-  if (diff < -total / 2) diff += total;
-
-  const absDiff = Math.abs(diff);
-
-  if (absDiff === 0) {
-    return { zIndex: total, x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 };
-  }
-
-  const direction = diff > 0 ? 1 : -1;
-  return {
-    zIndex: total - absDiff,
-    x: direction * absDiff * 25,
-    y: absDiff * 12,
-    rotate: direction * absDiff * 3,
-    scale: 1 - absDiff * 0.06,
-    opacity: Math.max(0, 1 - absDiff * 0.25),
-  };
-}
 
 export default function Testimonials() {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useTranslation();
 
@@ -45,6 +24,7 @@ export default function Testimonials() {
 
   const go = useCallback(
     (dir: number) => {
+      setDirection(dir);
       setActive((prev) => ((prev + dir) % len + len) % len);
     },
     [len]
@@ -57,8 +37,16 @@ export default function Testimonials() {
   }, [isHovered, go]);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
-    if (info.offset.x < -50) go(1);
-    else if (info.offset.x > 50) go(-1);
+    if (info.offset.x < -40) go(1);
+    else if (info.offset.x > 40) go(-1);
+  };
+
+  const review = reviews[active];
+
+  const variants = {
+    enter: (dir: number) => ({ x: dir > 0 ? 200 : -200, opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? -200 : 200, opacity: 0 }),
   };
 
   return (
@@ -83,69 +71,74 @@ export default function Testimonials() {
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="relative min-h-[320px] md:min-h-[300px] flex items-center justify-center">
-            {reviews.map((review, i) => {
-              const style = getCardStyle(i, active, len);
-              const isActive = i === active;
+          <div className="relative min-h-[300px] md:min-h-[280px] flex items-center justify-center">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={active}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.25, ease: "easeOut" }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.1}
+                onDragEnd={handleDragEnd}
+                className="absolute w-full glass rounded-2xl p-8 md:p-10 cursor-grab active:cursor-grabbing glow"
+              >
+                <Quote size={40} className="text-brand-accent/20 mb-4" />
 
-              return (
-                <motion.div
+                <div className="flex text-brand-gold mb-5 gap-0.5">
+                  {[...Array(5)].map((_, j) => (
+                    <Star
+                      key={j}
+                      size={18}
+                      fill={j < review.rating ? "currentColor" : "none"}
+                      className={j < review.rating ? "" : "text-white/20"}
+                    />
+                  ))}
+                </div>
+
+                <p className="text-brand-silver text-base md:text-lg leading-relaxed mb-6">
+                  &ldquo;{review.text}&rdquo;
+                </p>
+
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-full bg-brand-accent/20 border border-brand-accent/30 flex items-center justify-center text-brand-accent font-bold text-sm shadow-[0_0_15px_rgba(56,189,248,0.2)]">
+                    {review.name.charAt(0)}
+                  </div>
+                  <p className="text-white font-semibold">{review.name}</p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation arrows */}
+          <div className="flex items-center justify-center gap-4 mt-12">
+            <button
+              onClick={() => go(-1)}
+              className="w-10 h-10 rounded-full glass flex items-center justify-center text-brand-silver hover:text-brand-accent transition-colors"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <div className="flex gap-2">
+              {reviews.map((_, i) => (
+                <button
                   key={i}
-                  animate={{
-                    x: style.x,
-                    y: style.y,
-                    rotate: style.rotate,
-                    scale: style.scale,
-                    opacity: style.opacity,
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                  }}
-                  style={{ zIndex: style.zIndex, position: "absolute", width: "100%" }}
-                  drag={isActive ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.15}
-                  onDragEnd={isActive ? handleDragEnd : undefined}
-                  className={`glass rounded-2xl p-8 md:p-10 ${
-                    isActive
-                      ? "cursor-grab active:cursor-grabbing glow"
-                      : "pointer-events-none"
+                  onClick={() => { setDirection(i > active ? 1 : -1); setActive(i); }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === active ? "bg-brand-accent w-6" : "bg-white/20 hover:bg-white/40"
                   }`}
-                >
-                  <Quote size={40} className="text-brand-accent/20 mb-4" />
-
-                  <div className="flex text-brand-gold mb-5 gap-0.5">
-                    {[...Array(5)].map((_, j) => (
-                      <motion.div
-                        key={j}
-                        initial={false}
-                        animate={isActive ? { scale: [0.5, 1.2, 1], opacity: 1 } : { scale: 1, opacity: 1 }}
-                        transition={{ delay: j * 0.05, duration: 0.3 }}
-                      >
-                        <Star
-                          size={18}
-                          fill={j < review.rating ? "currentColor" : "none"}
-                          className={j < review.rating ? "" : "text-white/20"}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <p className="text-brand-silver text-base md:text-lg leading-relaxed mb-6">
-                    &ldquo;{review.text}&rdquo;
-                  </p>
-
-                  <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-brand-accent/20 border border-brand-accent/30 flex items-center justify-center text-brand-accent font-bold text-sm shadow-[0_0_15px_rgba(56,189,248,0.2)]">
-                      {review.name.charAt(0)}
-                    </div>
-                    <p className="text-white font-semibold">{review.name}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => go(1)}
+              className="w-10 h-10 rounded-full glass flex items-center justify-center text-brand-silver hover:text-brand-accent transition-colors"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
       </div>
