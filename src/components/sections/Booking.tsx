@@ -10,6 +10,10 @@ import {
   Sparkles,
   Smile,
   Sun,
+  Stethoscope,
+  Droplets,
+  Crown,
+  Baby,
   CalendarDays,
   User,
   Phone,
@@ -43,6 +47,10 @@ export default function Booking() {
     { id: "veneers", label: t("booking.service.veneers"), desc: t("booking.service.veneers.desc"), icon: <Sparkles size={32} /> },
     { id: "caries", label: t("booking.service.caries"), desc: t("booking.service.caries.desc"), icon: <Smile size={32} /> },
     { id: "whitening", label: t("booking.service.whitening"), desc: t("booking.service.whitening.desc"), icon: <Sun size={32} /> },
+    { id: "orthodontics", label: t("booking.service.ortho"), desc: t("booking.service.ortho.desc"), icon: <Stethoscope size={32} /> },
+    { id: "hygiene", label: t("booking.service.hygiene"), desc: t("booking.service.hygiene.desc"), icon: <Droplets size={32} /> },
+    { id: "crowns", label: t("booking.service.crowns"), desc: t("booking.service.crowns.desc"), icon: <Crown size={32} /> },
+    { id: "pediatric", label: t("booking.service.pediatric"), desc: t("booking.service.pediatric.desc"), icon: <Baby size={32} /> },
   ];
 
   const goTo = (target: number) => {
