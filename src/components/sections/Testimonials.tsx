@@ -16,7 +16,7 @@ export default function Testimonials() {
     { name: t("testimonials.r2.name"), rating: 5, text: t("testimonials.r2.text") },
     { name: t("testimonials.r3.name"), rating: 5, text: t("testimonials.r3.text") },
     { name: t("testimonials.r4.name"), rating: 5, text: t("testimonials.r4.text") },
-    { name: t("testimonials.r5.name"), rating: 4, text: t("testimonials.r5.text") },
+    { name: t("testimonials.r5.name"), rating: 5, text: t("testimonials.r5.text") },
     { name: t("testimonials.r6.name"), rating: 5, text: t("testimonials.r6.text") },
   ];
 

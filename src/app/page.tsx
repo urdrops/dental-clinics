@@ -4,6 +4,7 @@ import Services from "@/components/sections/Services";
 import Stats from "@/components/sections/Stats";
 import Doctors from "@/components/sections/Doctors";
 import BeforeAfter from "@/components/sections/BeforeAfter";
+import Gallery from "@/components/sections/Gallery";
 import Media from "@/components/sections/Media";
 import Testimonials from "@/components/sections/Testimonials";
 import Booking from "@/components/sections/Booking";
@@ -20,6 +21,7 @@ export default function Home() {
       <Stats />
       <Doctors />
       <BeforeAfter />
+      <Gallery />
       <Media />
       <Testimonials />
       <Booking />

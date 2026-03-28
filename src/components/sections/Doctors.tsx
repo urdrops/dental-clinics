@@ -61,6 +61,20 @@ export default function Doctors() {
       schedule: t("doctors.dr6.schedule"),
       photo: "/doctors/dr6.png",
     },
+    {
+      name: t("doctors.dr7.name"),
+      title: t("doctors.dr7.title"),
+      services: t("doctors.dr7.services").split(", "),
+      schedule: t("doctors.dr7.schedule"),
+      photo: "/doctors/dr1.png",
+    },
+    {
+      name: t("doctors.dr8.name"),
+      title: t("doctors.dr8.title"),
+      services: t("doctors.dr8.services").split(", "),
+      schedule: t("doctors.dr8.schedule"),
+      photo: "/doctors/dr1.png",
+    },
   ];
 
   const len = doctors.length;
